@@ -1,0 +1,19 @@
+<h2> Flight Information </h2>
+
+<h3>Departure Airport: <%= @booking.flight.departure_airport.name %></h3>
+<h3>Arrival Airport: <%= @booking.flight.arrival_airport.name %></h3>
+<h3>Departure Date: <%= @booking.flight.departure_time %></h3>
+
+<%= form_with model: @booking, local: true do |form| %>
+    <%= form.fields_for :passengers do |passenger_form| %>
+    <%= form.hidden_field :flight_id, value: params[:flight_id] %>
+        <div>
+            <h4>Passenger No.<%= passenger_form.index + 1 %>:</h4>
+            <%= passenger_form.label :name, "Name: " %>
+            <%= passenger_form.text_field :name %>
+            <%= passenger_form.label :email, "Email: " %>
+            <%= passenger_form.email_field :email %>
+        </div>
+    <% end %>
+    <%= form.submit "Checkout" %>
+<% end %>

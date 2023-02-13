@@ -5,7 +5,7 @@
     <%= form.label :arrival_airport_id, "Arrival airport: " %>
     <%= form.select(:arrival_airport_id, @arrival_airport_options, selected: params[:arrival_airport_id])%>
     <%= form.label :passenger_quantity, "Number of passenger(s): " %>
-    <%= form.select(:passenger_quantity, [["-", ""], [1,1], [2,2], [3,3], [4,4]], selected: params[:passenger_quantity])%>
+    <%= form.select(:passenger_quantity, [[1,1], [2,2], [3,3], [4,4]], selected: params[:passenger_quantity], default: [1,1])%>
     <%= form.label :departure_time, "Departure date: " %>
     <%= form.select(:departure_time, @departure_time_options, selected: params[:departure_time])%>
     <%= form.submit "Search" %>
@@ -22,15 +22,12 @@
   </thead>
   <tbody>
     <% @flights.each do |flight| %>
-        <%= form_with model: @booking, method: :get do |form|%>
             <tr>
                 <td><%= flight.departure_airport.name %></td>
                 <td><%= flight.arrival_airport.name %></td>
                 <td><%= flight.departure_time %></td>
-                <td><%= hidden_field :passenger_quantity, value: params[:passenger_quantity] %></td>
-                <td><%= form.submit "Select" %></td>
+                <td><%= link_to "Select", new_booking_path(flight_id: flight.id, passenger_quantity: params[:passenger_quantity] || 1) %></td>
             </tr>
-        <% end %>
     <% end %>
   </tbody>
 </table>
