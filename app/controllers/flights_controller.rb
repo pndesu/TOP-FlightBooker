@@ -10,6 +10,7 @@ class FlightsController < ApplicationController
         if params[:arrival_airport_id].present?
             @flights = @flights.where(arrival_airport_id: params[:arrival_airport_id])
         end
+        
         if params[:departure_time].present?
             departure_time = params[:departure_time].to_date.beginning_of_day
             @flights = @flights.where(departure_time: departure_time..departure_time.end_of_day)

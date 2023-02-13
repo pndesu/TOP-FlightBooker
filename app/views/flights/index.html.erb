@@ -8,7 +8,7 @@
     <%= form.select(:passenger_quantity, [["-", ""], [1,1], [2,2], [3,3], [4,4]], selected: params[:passenger_quantity])%>
     <%= form.label :departure_time, "Departure date: " %>
     <%= form.select(:departure_time, @departure_time_options, selected: params[:departure_time])%>
-    <%= form.submit "Search"%>
+    <%= form.submit "Search" %>
 <% end %>
 
 <h2>Flights</h2>
@@ -22,11 +22,15 @@
   </thead>
   <tbody>
     <% @flights.each do |flight| %>
-      <tr>
-        <td><%= flight.departure_airport.name %></td>
-        <td><%= flight.arrival_airport.name %></td>
-        <td><%= flight.departure_time %></td>
-      </tr>
+        <%= form_with model: @booking, method: :get do |form|%>
+            <tr>
+                <td><%= flight.departure_airport.name %></td>
+                <td><%= flight.arrival_airport.name %></td>
+                <td><%= flight.departure_time %></td>
+                <td><%= hidden_field :passenger_quantity, value: params[:passenger_quantity] %></td>
+                <td><%= form.submit "Select" %></td>
+            </tr>
+        <% end %>
     <% end %>
   </tbody>
 </table>
