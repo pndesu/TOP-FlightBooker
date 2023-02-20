@@ -1,23 +1,17 @@
 <h2> Flight Information </h2>
 
-<h3>Departure Airport: <%= @booking.flight.departure_airport.name %></h3>
-<h3>Arrival Airport: <%= @booking.flight.arrival_airport.name %></h3>
-<h3>Departure Date: <%= @booking.flight.departure_time %></h3>
+<h3>Departure Airport: <%= @flight.departure_airport.name %></h3>
+<h3>Arrival Airport: <%= @flight.arrival_airport.name %></h3>
+<h3>Departure Date: <%= @flight.departure_time %></h3>
 
 <%= form_with model: @booking, local: true do |form| %>
     <div class="p_form">
         <h4>Passengers:</h4>
         <%= form.fields_for :passengers do |passenger_form| %>
-            <%= form.hidden_field :flight_id, value: params[:flight_id] %>
-            <div class="nested-fields">
-                <%= passenger_form.label :name, "Name: " %>
-                <%= passenger_form.text_field :name %>
-                <%= passenger_form.label :email, "Email: " %>
-                <%= passenger_form.email_field :email %>
-            </div>
-            <% (params[:passenger_quantity].to_i - 1).times do %> 
-                <%= render 'passenger_fields', f: passenger_form %>
-            <% end %>
+            <%= form.hidden_field :flight_id, value: @flight.id %>
+            <%= form.hidden_field :passenger_quantity, value: params[:passenger_quantity] %>
+
+            <%= render 'passenger_fields', f: passenger_form %>
         <% end %>
     </div>
     <div class="links">

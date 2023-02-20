@@ -26,7 +26,11 @@
                 <td><%= flight.departure_airport.name %></td>
                 <td><%= flight.arrival_airport.name %></td>
                 <td><%= flight.departure_time %></td>
-                <td><%= link_to "Select", new_booking_path(flight_id: flight.id, passenger_quantity: params[:passenger_quantity] || 1) %></td>
+                <%= form_with method: :get, url: new_booking_path do |form|%>
+                  <%= form.hidden_field :passenger_quantity, value: params[:passenger_quantity] || 1 %>
+                  <%= form.hidden_field :flight_id, value: flight.id %>
+                  <td><%= form.submit "Select" %></td>
+                <% end %>
             </tr>
     <% end %>
   </tbody>

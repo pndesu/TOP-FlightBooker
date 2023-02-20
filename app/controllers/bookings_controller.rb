@@ -1,17 +1,21 @@
 class BookingsController < ApplicationController
     def new
-        @booking = Booking.new(flight_id: params[:flight_id])
+        @booking = Booking.new
+        @flight = Flight.find(params[:flight_id])
         params[:passenger_quantity].to_i.times{@booking.passengers.build}
     end
 
     def create
         @booking = Booking.new(booking_params)
         if @booking.save
+            @booking.passengers.each do |passenger|
+                PassengerMailer.with(passenger: passenger, flight: @booking.flight).welcome_email.deliver_later
+            end
             flash[:notice] = "Booking created successfully!"
             redirect_to booking_path(@booking)
         else
-            flash.now[:alert] = "Ooops! Something went wrong..."
-            redirect_to new_booking_path(@booking), status: :unprocessable_entity
+            flash[:alert] = "Booking failed!"
+            redirect_to new_booking_path(flight_id: @booking.flight_id, passenger_quantity: params[:passenger_quantity] || 1)
         end
     end
 
