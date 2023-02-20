@@ -72,5 +72,6 @@ group :test do
 end
 
 gem "faker"
+gem "cocoon"
 gem 'bootstrap-sass', '~> 3.4.1'
 gem 'jquery-rails'

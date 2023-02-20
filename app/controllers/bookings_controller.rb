@@ -7,11 +7,11 @@ class BookingsController < ApplicationController
     def create
         @booking = Booking.new(booking_params)
         if @booking.save
-            redirect_to booking_path(@booking)
             flash[:notice] = "Booking created successfully!"
+            redirect_to booking_path(@booking)
         else
             flash.now[:alert] = "Ooops! Something went wrong..."
-            render :new, status: :unprocessable_entity
+            redirect_to new_booking_path(@booking), status: :unprocessable_entity
         end
     end
 

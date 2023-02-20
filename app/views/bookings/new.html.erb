@@ -5,15 +5,23 @@
 <h3>Departure Date: <%= @booking.flight.departure_time %></h3>
 
 <%= form_with model: @booking, local: true do |form| %>
-    <%= form.fields_for :passengers do |passenger_form| %>
-    <%= form.hidden_field :flight_id, value: params[:flight_id] %>
-        <div>
-            <h4>Passenger No.<%= passenger_form.index + 1 %>:</h4>
-            <%= passenger_form.label :name, "Name: " %>
-            <%= passenger_form.text_field :name %>
-            <%= passenger_form.label :email, "Email: " %>
-            <%= passenger_form.email_field :email %>
-        </div>
-    <% end %>
+    <div class="p_form">
+        <h4>Passengers:</h4>
+        <%= form.fields_for :passengers do |passenger_form| %>
+            <%= form.hidden_field :flight_id, value: params[:flight_id] %>
+            <div class="nested-fields">
+                <%= passenger_form.label :name, "Name: " %>
+                <%= passenger_form.text_field :name %>
+                <%= passenger_form.label :email, "Email: " %>
+                <%= passenger_form.email_field :email %>
+            </div>
+            <% (params[:passenger_quantity].to_i - 1).times do %> 
+                <%= render 'passenger_fields', f: passenger_form %>
+            <% end %>
+        <% end %>
+    </div>
+    <div class="links">
+        <%= link_to_add_association "Add Passenger", form, :passengers %>
+    </div>
     <%= form.submit "Checkout" %>
 <% end %>
